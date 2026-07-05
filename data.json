@@ -8,5 +8,12 @@
       "added_at": "2026-07-05T02:01:34.992205"
     }
   ],
-  "delete-me": []
+  "delete-me": [
+    {
+      "id": "ca6e8739",
+      "url": "https://delete.this",
+      "title": "https://delete.this",
+      "added_at": "2026-07-05T02:03:10.561887"
+    }
+  ]
 }
