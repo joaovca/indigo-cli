@@ -23,7 +23,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -221,3 +221,4 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,linux
+TECHNICAL_DEBTS.md
