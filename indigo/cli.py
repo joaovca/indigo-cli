@@ -113,5 +113,66 @@ def lists():
         count = len(items)
         console.print(f" - [bold blue]{category_name}[/bold blue] ({count} items)")
 
+@app.command()
+def create_list(name: str):
+    """Create a new, empty study list."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    if name in data:
+        console.print(f"⚠️ List [bold yellow]{name}[/bold yellow] already exists.")
+        return
+        
+    data[name] = []
+    storage.save_data(data)
+    git_manager.sync_push()
+    console.print(f"✅ Created new empty list: [bold green]{name}[/bold green]")
+
+
+@app.command()
+def delete_link(category: str, item_id: str):
+    """Delete a specific link from a category by its ID."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    if category in data:
+        original_length = len(data[category])
+        data[category] = [item for item in data[category] if item.get("id") != item_id]
+        
+        if len(data[category]) < original_length:
+            storage.save_data(data)
+            git_manager.sync_push()
+            console.print(f"🗑️ Deleted link [bold red]{item_id}[/bold red] from {category}.")
+        else:
+            console.print(f"⚠️ Link ID [bold yellow]{item_id}[/bold yellow] not found.")
+    else:
+        console.print(f"⚠️ Category [bold yellow]{category}[/bold yellow] does not exist.")
+
+
+@app.command()
+def delete_list(name: str):
+    """Delete an entire list and all its contents."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    if name not in data:
+        console.print(f"⚠️ List [bold yellow]{name}[/bold yellow] not found.")
+        return
+    if name == "inbox":
+        console.print("❌ Cannot delete the default 'inbox'.")
+        return
+        
+    # Double confirmation protocol
+    item_count = len(data[name])
+    typer.confirm(f"Are you sure you want to delete '{name}' containing {item_count} items?", abort=True)
+    typer.confirm(f"DOUBLE CHECK: This is irreversible. Delete '{name}' permanently?", abort=True)
+    
+    del data[name]
+    storage.save_data(data)
+    git_manager.sync_push()
+    console.print(f"🗑️ List [bold red]{name}[/bold red] deleted permanently.")
+
+# Always in the bottom
+
 if __name__ == "__main__":
     app()
