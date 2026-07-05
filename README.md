@@ -27,36 +27,6 @@ pipx install git+[https://github.com/joaovca/indigo-cli.git](https://github.com/
 
 # Or using standard pip
 pip install git+[https://github.com/joaovca/indigo-cli.git](https://github.com/joaovca/indigo-cli.git)
-
-# Indigo CLI 🟣
-
-> An opinionated, Git-synchronized study list manager that cures the "Bookmark Graveyard."
-
-Most people use read-it-later apps to passively hoard links they will never look at again. **Indigo** introduces "mindful friction." It acts as a staging ground for your learning resources, forcing you to define the *intent* behind a saved link before it gets organized into your active projects.
-
-Because Indigo uses a private Git repository as its backend, your study list is perfectly synchronized across your personal and work computers—with zero database costs, no API keys, and no hosting required.
-
----
-
-## ⚡ Features
-
-* **The Mindful Pipeline:** An interactive terminal UI that forces you to answer *why* you saved a link and *what* you expect to learn before it leaves your inbox.
-* **Invisible Git Synchronization:** Operates a headless Git loop in the background. Every time you add an item or run the pipeline, Indigo automatically pulls, commits, and pushes to a private repository. 
-* **Zero-Infrastructure:** No cloud database or web server required. Your data lives in a standard `data.json` file backed by Git.
-* **Terminal Native:** Built with modern Python CLI libraries for a beautiful, keyboard-navigable interface.
-
----
-
-## 🛠️ Installation
-
-You can install Indigo globally on your machine directly from this repository using `pip` or `pipx` (recommended):
-
-```bash
-# Using pipx (Recommended for isolated global CLIs)
-pipx install git+[https://github.com/joaovca/indigo-cli.git](https://github.com/joaovca/indigo-cli.git)
-
-# Or using standard pip
-pip install git+[https://github.com/joaovca/indigo-cli.git](https://github.com/joaovca/indigo-cli.git)
 ```
 
 ---
@@ -67,7 +37,7 @@ pip install git+[https://github.com/joaovca/indigo-cli.git](https://github.com/j
 Create an empty private repository on GitHub, then link your CLI to it. This sets up the background bridge.
 
 ```bash
-indigo auth git@github.com:joaovca/your-private-repo.git
+indigo auth git@github.com:YOUR_USERNAME/YOUR-PRIVATE-REPO.git
 ```
 
 ### 2. The Inbox
