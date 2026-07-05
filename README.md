@@ -75,13 +75,14 @@ indigo lists
 
 # Explicitly create an empty study list
 indigo create-list product-design
-
+`
 # Track deadlines added during the pipeline phase
 indigo dates
 
 # Clean up unwanted resources
 indigo delete-link product-design <ITEM_ID>
 indigo delete-list product-design
+```
 
 ---
 
