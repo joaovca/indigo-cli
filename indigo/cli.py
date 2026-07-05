@@ -45,5 +45,49 @@ def list(category: str = typer.Argument("inbox", help="Target category to search
     for item in data[category]:
         console.print(f" - [{item['id']}] {item['title']}")
 
+from InquirerPy import inquirer
+from datetime import datetime
+
+@app.command()
+def pipeline():
+    """Run interactive evaluation parameters across unorganized Inbox nodes."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    inbox = data.get("inbox", [])
+    if not inbox:
+        console.print("✨ Inbox zero reached! Nothing left to optimize.")
+        return
+
+    item = inbox.pop(0)
+    console.print(f"\n🚀 [bold]Processing Node:[/bold] {item['url']}\n")
+
+    # Collecting qualitative user choices via terminal prompts
+    chamou_atencao = inquirer.text(message="O que chamou atenção?").execute()
+    espera_aprender = inquirer.text(message="O que você espera aprender?").execute()
+    prioridade = inquirer.select(
+        message="Selecione a prioridade:",
+        choices=["Alta", "Média", "Baixa"]
+    ).execute()
+    prazo = inquirer.text(message="Prazo opcional (YYYY-MM-DD ou deixe em branco):").execute()
+    target_category = inquirer.text(message="Qual a categoria de destino? (ex: tech-basics):", default="geral").execute()
+
+    # Mapping meta structural parameters
+    item["pipeline"] = {
+        "promoted_at": datetime.now().isoformat(),
+        "motivo": chamou_atencao,
+        "objetivo": espera_aprender,
+        "prioridade": prioridade,
+        "prazo": prazo if prazo else None
+    }
+
+    if target_category not in data:
+        data[target_category] = []
+    data[target_category].append(item)
+    
+    storage.save_data(data)
+    git_manager.sync_push()
+    console.print(f"\n✅ Successfully promoted and moved target resource downstream to [bold green]{target_category}[/bold green]!")
+
 if __name__ == "__main__":
     app()

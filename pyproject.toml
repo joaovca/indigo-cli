@@ -14,7 +14,10 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "indigo_cli", from = "src"}]
+packages = [{include = "indigo"}]
+
+[tool.poetry.scripts]
+indigo = "indigo.cli:app"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
