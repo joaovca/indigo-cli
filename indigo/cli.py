@@ -4,6 +4,7 @@ import typer
 from rich.console import Console
 sys.path.append(os.path.abspath("."))
 from indigo.core import storage, git_manager
+from datetime import datetime
 
 app = typer.Typer(help="Indigo: Async Study List Manager")
 console = Console()
@@ -171,6 +172,45 @@ def delete_list(name: str):
     storage.save_data(data)
     git_manager.sync_push()
     console.print(f"🗑️ List [bold red]{name}[/bold red] deleted permanently.")
+
+@app.command()
+def dates():
+    """Show links categorized by their deadlines (Late or On Time)."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    today = datetime.today().date()
+    late = []
+    on_time = []
+    
+    for category_name, items in data.items():
+        for item in items:
+            prazo = item.get("pipeline", {}).get("prazo")
+            if prazo:
+                try:
+                    # Expects YYYY-MM-DD
+                    target_date = datetime.strptime(prazo.strip(), "%Y-%m-%d").date()
+                    formatted_string = f"[{item['id']}] {item['url']} ({category_name}) -> [bold]{prazo}[/bold]"
+                    
+                    if target_date < today:
+                        late.append(formatted_string)
+                    else:
+                        on_time.append(formatted_string)
+                except ValueError:
+                    # Skip items with invalid date strings
+                    pass
+
+    console.print("\n📅 [bold]Deadline Tracker[/bold]")
+    if late:
+        console.print("\n🚨 [bold red]LATE (Overdue)[/bold red]")
+        for entry in late: console.print(f" - {entry}")
+    
+    if on_time:
+        console.print("\n✅ [bold green]ON TIME / PENDING[/bold green]")
+        for entry in on_time: console.print(f" - {entry}")
+        
+    if not late and not on_time:
+        console.print("\n🎉 No deadlines found in your pipelines!")
 
 # Always in the bottom
 

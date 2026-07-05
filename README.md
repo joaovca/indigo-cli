@@ -66,6 +66,23 @@ View the items you've committed to studying, cleanly categorized.
 indigo list product-design
 ```
 
+### 5. Managing Lists and Links
+Indigo allows strict structural control over your environments.
+
+```bash
+# View all categories and item counts
+indigo lists
+
+# Explicitly create an empty study list
+indigo create-list product-design
+
+# Track deadlines added during the pipeline phase
+indigo dates
+
+# Clean up unwanted resources
+indigo delete-link product-design <ITEM_ID>
+indigo delete-list product-design
+
 ---
 
 ## 🏗️ Architecture & Tech Stack
