@@ -3,13 +3,14 @@ name = "indigo-cli"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "João Clasen",email = "joao.clasen@c-137labs.com"}
+    {name = "João Clasen",email = "emaildojvca@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14,<4.0"
 dependencies = [
     "typer (>=0.26.8,<0.27.0)",
-    "rich (>=15.0.0,<16.0.0)"
+    "rich (>=15.0.0,<16.0.0)",
+    "inquirerpy (>=0.3.4,<0.4.0)"
 ]
 
 [tool.poetry]
