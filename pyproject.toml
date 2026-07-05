@@ -1,0 +1,18 @@
+[project]
+name = "indigo-cli"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "João Clasen",email = "joao.clasen@c-137labs.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "indigo_cli", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
