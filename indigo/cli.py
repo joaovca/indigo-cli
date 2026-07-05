@@ -8,6 +8,19 @@ from indigo.core import storage, git_manager
 app = typer.Typer(help="Indigo: Async Study List Manager")
 console = Console()
 
+@app.callback(invoke_without_command=True)
+def default(ctx: typer.Context):
+    """Indigo: Async Study List Manager"""
+    if ctx.invoked_subcommand is None:
+        console.print(r"""[bold blue]
+ ___ _   _ ____ ___ ____  ___  
+|_ _| \ | |  _ \_ _/ ___|/ _ \ 
+ | ||  \| | | | | | |  _| | | |
+ | || |\  | |_| | | |_| | |_| |
+|___|_| \_|____/___\____|\___/ 
+        [/bold blue]""")
+        console.print("\n[bold]Welcome to Indigo![/bold] Run [cyan]indigo --help[/cyan] to see available commands.\n")
+
 @app.command()
 def auth(repo_url: str = typer.Argument(..., help="Your private GitHub repository tracking URL")):
     """Connect a private GitHub tracking repository as your persistent back-end cloud space."""
@@ -16,7 +29,7 @@ def auth(repo_url: str = typer.Argument(..., help="Your private GitHub repositor
     console.print("✅ [bold green]Authenticated and synchronized structural nodes successfully![/bold green]")
 
 @app.command()
-def add(url: str, category: str = "inbox"):
+def add(url: str, category: str = typer.Argument("inbox", help="Target category to add to")):
     """Insert a standard link metadata node to targeted categories."""
     git_manager.sync_pull()
     data = storage.load_data()
@@ -88,6 +101,17 @@ def pipeline():
     storage.save_data(data)
     git_manager.sync_push()
     console.print(f"\n✅ Successfully promoted and moved target resource downstream to [bold green]{target_category}[/bold green]!")
+
+@app.command()
+def lists():
+    """Show all existing study lists and their item counts."""
+    git_manager.sync_pull()
+    data = storage.load_data()
+    
+    console.print("\n📁 [bold]Available Lists:[/bold]")
+    for category_name, items in data.items():
+        count = len(items)
+        console.print(f" - [bold blue]{category_name}[/bold blue] ({count} items)")
 
 if __name__ == "__main__":
     app()
